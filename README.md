@@ -28,5 +28,5 @@ If you have any questions or suggestions, feel free to reach out:
 
 If you have any questions or suggestions, feel free to reach out:
 
-- **Satyam Kolhe** - [LinkedIn](https://www.linkedin.com/in/satyam-kolhe/) | [GitHub](https://github.com/Satyam-Kolhe)
+- **Satyam Kolhe** - [LinkedIn](https://www.linkedin.com/in/satyam-kolhe-0537a228a/) | [GitHub](https://github.com/Satyam-Kolhe)
 
