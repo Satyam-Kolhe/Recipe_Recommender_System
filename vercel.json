@@ -10,8 +10,5 @@
         "distDir": "public"
       }
     }
-  ],
-  "scripts": {
-    "start": "bash start.sh"
-  }
+  ]
 }
