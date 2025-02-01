@@ -17,3 +17,16 @@ Nutritional Information: View detailed nutritional information for each recommen
 Easy-to-Follow Instructions: Get step-by-step cooking instructions for each recipe.
 
 User-Friendly Interface: A clean and intuitive interface that makes it easy to use the recommender system.
+
+# License
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+# Contact
+If you have any questions or suggestions, feel free to reach out:
+
+## Contact
+
+If you have any questions or suggestions, feel free to reach out:
+
+- **Satyam Kolhe** - [LinkedIn](https://www.linkedin.com/in/satyam-kolhe/) | [GitHub](https://github.com/Satyam-Kolhe)
+
