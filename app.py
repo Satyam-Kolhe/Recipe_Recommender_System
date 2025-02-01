@@ -2,22 +2,22 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
-from sklearn.feature_extraction.text import CountVectorizer
+# from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import ast
-from scipy.sparse import csr_matrix
-import numpy as np
+# from scipy.sparse import csr_matrix
+# import numpy as np
 import lzma
-
 import gzip
 import shutil
-with lzma.open('df_dict(1).pkl.xz', 'rb') as f:
-    df_dict = pickle.load(f)
+with lzma.open('df_dict.pkl.xz', 'rb') as f:
+   df_dict = pickle.load(f)
 
 cv = pickle.load(open('count_vectorizer.pkl', 'rb'))
 vectors = pickle.load(open('vectors.pkl', 'rb'))
 # df_dict = pickle.load(open('df_dict.pkl', 'rb'))
 DataFrame = pd.DataFrame(df_dict)
+
 ingredients_lst = DataFrame['ingredients_str'].unique().tolist()
 
 
@@ -92,7 +92,8 @@ def suggest_recipes(user_ingredients):
     DataFrame['similarity'] = similarity_scores
 
     # Check for recipes matching the ingredients
-    top_recipes = DataFrame.nlargest(10, 'similarity')[['name', 'minutes', 'steps', 'ingredients']]
+    top_recipes = DataFrame.nlargest(10, 'similarity')[['name', 'minutes', 'steps', 'ingredients', 'nutrition']]
+
     if not top_recipes.empty:
         top_recipes['image_url'] = top_recipes['name'].apply(fetch_image_url)
         top_recipes['name'] = top_recipes['name'].apply(lambda x: x.title())
@@ -112,11 +113,44 @@ if st.button("Recommend Recipes"):
                 st.header(recommendations.iloc[i]['name'])
                 st.write('Time to make:', recommendations.iloc[i]['minutes'], 'minutes')
                 st.image(recommendations.iloc[i]['image_url'], use_container_width=True)
+
                 # Display ingredients in unordered list
                 recipe_ingredients = ast.literal_eval(recommendations.iloc[i]['ingredients'])
                 st.markdown("#### Ingredients")
                 for ingredient in recipe_ingredients:
                     st.markdown(f"- {ingredient.capitalize()}")
+
+
+                # Function to clean and convert nutrition string to float
+                def clean_and_convert(value):
+                    try:
+                        # Remove brackets and whitespace, then split by commas
+                        value_str = value.replace('[', '').replace(']', '').strip()
+                        # Convert to float
+                        return float(value_str)
+                    except ValueError:
+                        return 0.0  # Default value if conversion fails
+
+
+                # Extract nutritional values
+                nutrition_str = str(recommendations.iloc[i]['nutrition'])
+
+                # Split the string into individual components
+                nutrition_values = nutrition_str.replace('[', '').replace(']', '').strip().split(',')
+
+                # Convert values to float
+                nutrition_values = [clean_and_convert(value) for value in nutrition_values]
+
+                # Display nutritional values
+                st.markdown("#### Nutritional Values")
+                st.write(f"Calories: {nutrition_values[0]:.2f} Cal")
+                st.write(f"Total Fat: {nutrition_values[1]:.2f}g")
+                st.write(f"Sugar: {nutrition_values[2]:.2f}g")
+                st.write(f"Sodium: {nutrition_values[3]:.2f}mg")
+                st.write(f"Protein: {nutrition_values[4]:.2f}g")
+                st.write(f"Saturated Fat: {nutrition_values[5]:.2f}g")
+                st.write(f"Carbohydrates: {nutrition_values[6]:.2f}g")
+
                 # Display steps in ordered list
                 steps = ast.literal_eval(recommendations.iloc[i]['steps'])
                 st.markdown("#### Steps")
